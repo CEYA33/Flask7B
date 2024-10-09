@@ -28,7 +28,7 @@
             width: 100%;
         }
 
-        h1, h2 {
+        h1 {
             text-align: center;
             color: #333;
             margin-bottom: 20px;
@@ -42,42 +42,19 @@
         .form-control {
             border-radius: 8px;
             border-color: #ced4da;
+            padding: 12px;
         }
 
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #00acc1;
+            border-color: #00acc1;
             border-radius: 8px;
             width: 100%;
+            padding: 10px;
         }
 
         .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        .btn-info {
-            background-color: #17a2b8;
-            border-radius: 8px;
-            width: 100%;
-        }
-
-        .btn-info:hover {
-            background-color: #117a8b;
-        }
-
-        table {
-            margin-top: 20px;
-        }
-
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        td,
-        th {
-            padding: 12px;
-            text-align: left;
+            background-color: #00838f;
         }
 
         .btn-warning {
@@ -87,66 +64,28 @@
         .btn-danger {
             border-radius: 6px;
         }
-
-        #searchInput {
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        /* Custom color for buttons and hover */
-        .btn-primary {
-            background-color: #00acc1; /* Turquoise */
-            border-color: #00acc1;
-        }
-
-        .btn-primary:hover {
-            background-color: #00838f;
-        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Formulario de Contacto</h1>
-                <form id="frmContacto" action="/contacto" method="POST">
-                    <input type="hidden" id="id_contacto" name="id_contacto">
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="email" name="email" required minlength="5" maxlength="50">
-                    </div>
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required minlength="5" maxlength="50">
-                    </div>
-                    <div class="mb-3">
-                        <label for="asunto" class="form-label">Asunto</label>
-                        <input type="text" class="form-control" id="asunto" name="asunto" required minlength="5" maxlength="50">
-                    </div>
-                    <button type="submit" class="btn btn-primary" id="submitButton">Contactar</button>
-                </form>
+        <h1>Formulario de Contacto</h1>
+        <form id="frmContacto" action="/contacto" method="POST">
+            <input type="hidden" id="id_contacto" name="id_contacto">
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" name="email" required minlength="5" maxlength="50">
             </div>
-
-            <div class="col-md-12 mt-4">
-                <h2>Buscar</h2>
-                <div class="mb-3">
-                    <input type="text" class="form-control" id="searchInput" placeholder="Buscar por Nombre">
-                    <button id="searchButton" class="btn btn-info mt-2">Buscar</button>
-                </div>
-                <table class="table table-hover table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Correo Electrónico</th>
-                            <th>Nombre</th>
-                            <th>Asunto</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbodyLog"></tbody>
-                </table>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required minlength="5" maxlength="50">
             </div>
-        </div>
+            <div class="mb-3">
+                <label for="asunto" class="form-label">Asunto</label>
+                <input type="text" class="form-control" id="asunto" name="asunto" required minlength="5" maxlength="50">
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitButton">Contactar</button>
+        </form>
     </div>
 
     <script>
@@ -196,37 +135,10 @@
                 return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
             }, "Por favor, introduce solo letras.");
 
-            function buscar(term = "") {
-                $.get("/buscar", { q: term }, function (respuesta) {
-                    $("#tbodyLog").html("");
-
-                    for (var x in respuesta) {
-                        var registro = respuesta[x];
-                        $("#tbodyLog").append(`<tr>
-                            <td>${registro.Correo_Electronico}</td>
-                            <td>${registro.Nombre}</td>
-                            <td>${registro.Asunto}</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm" onclick="editar(${registro.Id_Contacto}, '${registro.Correo_Electronico}', '${registro.Nombre}', '${registro.Asunto}')">Editar</button>
-                                <button class="btn btn-danger btn-sm" onclick="eliminar(${registro.Id_Contacto})">Eliminar</button>
-                            </td>
-                        </tr>`);
-                    }
-                });
-            }
-
-            buscar();
-
-            $("#searchButton").click(function () {
-                var searchTerm = $("#searchInput").val().trim();
-                buscar(searchTerm);
-            });
-
             window.eliminar = function (id) {
                 if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
                     $.post("/eliminar_contacto", { id: id }, function (result) {
                         alert("Contacto eliminado correctamente.");
-                        buscar();
                     }).fail(function (err) {
                         alert("Error al eliminar el registro.");
                     });
@@ -238,7 +150,6 @@
                 $("#email").val(correo);
                 $("#nombre").val(nombre);
                 $("#asunto").val(asunto);
-                
                 $("#submitButton").text("Actualizar");
             };
 
@@ -250,7 +161,6 @@
             var channel = pusher.subscribe("registrosTiempoReal");
             channel.bind("registroTiempoReal", function (mensaje) {
                 console.log("Mensaje recibido:", mensaje);
-                buscar();
             });
         });
     </script>
