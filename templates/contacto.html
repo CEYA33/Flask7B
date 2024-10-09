@@ -24,11 +24,11 @@
             border-radius: 10px;
             padding: 30px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 800px;
             width: 100%;
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
             color: #333;
             margin-bottom: 20px;
@@ -57,12 +57,23 @@
             background-color: #00838f;
         }
 
-        .btn-warning {
+        .btn-warning, .btn-danger {
             border-radius: 6px;
         }
 
-        .btn-danger {
-            border-radius: 6px;
+        table {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        th {
+            background-color: #00acc1;
+            color: white;
+            text-align: left;
+        }
+
+        td, th {
+            padding: 12px;
         }
     </style>
 </head>
@@ -86,10 +97,24 @@
             </div>
             <button type="submit" class="btn btn-primary" id="submitButton">Contactar</button>
         </form>
+
+        <h2>Registros de Contacto</h2>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>Correo Electrónico</th>
+                    <th>Nombre</th>
+                    <th>Asunto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyLog"></tbody>
+        </table>
     </div>
 
     <script>
         $(document).ready(function () {
+            // Form validation rules
             $("#frmContacto").validate({
                 rules: {
                     email: {
@@ -131,28 +156,56 @@
                 }
             });
 
+            // Custom validation method for letters only
             $.validator.addMethod("lettersonly", function (value, element) {
                 return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
             }, "Por favor, introduce solo letras.");
 
+            // Fetch and display the records in the table
+            function actualizarTabla() {
+                $.get("/buscar", function (respuesta) {
+                    $("#tbodyLog").html("");
+
+                    for (var registro of respuesta) {
+                        $("#tbodyLog").append(`<tr>
+                            <td>${registro.Correo_Electronico}</td>
+                            <td>${registro.Nombre}</td>
+                            <td>${registro.Asunto}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="editar(${registro.Id_Contacto}, '${registro.Correo_Electronico}', '${registro.Nombre}', '${registro.Asunto}')">Editar</button>
+                                <button class="btn btn-danger btn-sm" onclick="eliminar(${registro.Id_Contacto})">Eliminar</button>
+                            </td>
+                        </tr>`);
+                    }
+                });
+            }
+
+            // Initialize the table with records
+            actualizarTabla();
+
+            // Function to delete a contact
             window.eliminar = function (id) {
                 if (confirm("¿Estás seguro de que deseas eliminar este registro?")) {
                     $.post("/eliminar_contacto", { id: id }, function (result) {
                         alert("Contacto eliminado correctamente.");
+                        actualizarTabla();
                     }).fail(function (err) {
                         alert("Error al eliminar el registro.");
                     });
                 }
             };
 
+            // Function to edit a contact
             window.editar = function (id, correo, nombre, asunto) {
                 $("#id_contacto").val(id);
                 $("#email").val(correo);
                 $("#nombre").val(nombre);
                 $("#asunto").val(asunto);
+
                 $("#submitButton").text("Actualizar");
             };
 
+            // Pusher for real-time updates
             Pusher.logToConsole = true;
             var pusher = new Pusher('753bfbd057a6da283a0f', {
                 cluster: 'us2'
@@ -160,10 +213,11 @@
 
             var channel = pusher.subscribe("registrosTiempoReal");
             channel.bind("registroTiempoReal", function (mensaje) {
-                console.log("Mensaje recibido:", mensaje);
+                actualizarTabla();
             });
         });
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
