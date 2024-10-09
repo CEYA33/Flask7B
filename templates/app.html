@@ -70,15 +70,15 @@
             <input type="hidden" id="id_contacto" name="id_contacto">
             <div class="mb-3">
                 <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" id="email" name="email" required minlength="5" maxlength="50">
+                <input type="email" class="form-control" id="email" name="email" required minlength="5" maxlength="50" autocomplete= "off">
             </div>
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" required minlength="5" maxlength="50">
+                <input type="text" class="form-control" id="nombre" name="nombre" required minlength="5" maxlength="50" autocomplete= "off">
             </div>
             <div class="mb-3">
                 <label for="asunto" class="form-label">Asunto</label>
-                <input type="text" class="form-control" id="asunto" name="asunto" required minlength="5" maxlength="50">
+                <input type="text" class="form-control" id="asunto" name="asunto" required minlength="5" maxlength="50" autocomplete= "off">
             </div>
             <button type="submit" class="btn btn-primary" id="submitButton">Contactar</button>
         </form>
@@ -96,13 +96,13 @@
                     },
                     nombre: {
                         required: true,
-                        minlength: 10,
+                        minlength: 5,
                         maxlength: 50,
                         lettersonly: true
                     },
                     asunto: {
                         required: true,
-                        minlength: 10,
+                        minlength: 5,
                         maxlength: 50
                     }
                 },
@@ -115,13 +115,13 @@
                     },
                     nombre: {
                         required: "Por favor, introduce tu nombre.",
-                        minlength: "El nombre debe tener al menos 10 caracteres.",
+                        minlength: "El nombre debe tener al menos 5 caracteres.",
                         maxlength: "El nombre no puede tener más de 50 caracteres.",
                         lettersonly: "El nombre solo debe contener letras."
                     },
                     asunto: {
                         required: "Por favor, introduce el asunto.",
-                        minlength: "El asunto debe tener al menos 10 caracteres.",
+                        minlength: "El asunto debe tener al menos 5 caracteres.",
                         maxlength: "El asunto no puede tener más de 50 caracteres."
                     }
                 }
