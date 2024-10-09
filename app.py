@@ -7,10 +7,10 @@ import pytz
 app = Flask(__name__)
 
 pusher_client = pusher.Pusher(
-    app_id='1864237',
-    key='fe0a6fda0635d4db01ce',
-    secret='e5c4c8f921f883404989',
-    cluster='us2',
+        app_id = "1766057",
+        key = "753bfbd057a6da283a0f",
+        secret = "6420d80b8c00344d8a33",
+        cluster = "us2",
     ssl=True
 )
 
