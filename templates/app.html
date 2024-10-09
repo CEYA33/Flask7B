@@ -74,7 +74,7 @@
             </div>
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" required minlength="5 maxlength="50">
+                <input type="text" class="form-control" id="nombre" name="nombre" required minlength="5" maxlength="50">
             </div>
             <div class="mb-3">
                 <label for="asunto" class="form-label">Asunto</label>
@@ -132,9 +132,9 @@
             }, "Por favor, introduce solo letras.");
 
             Pusher.logToConsole = true;
-            var pusher = new Pusher('fe0a6fda0635d4db01ce', {
-                cluster: 'us2'
-            });
+            var pusher = new Pusher('753bfbd057a6da283a0f', {
+                  cluster: 'us2'
+                });
 
             var channel = pusher.subscribe("registrosTiempoReal");
             channel.bind("registroTiempoReal", function (mensaje) {
