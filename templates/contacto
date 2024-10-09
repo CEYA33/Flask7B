@@ -86,7 +86,6 @@
 
     <script>
         $(document).ready(function () {
-            // Validación del formulario
             $("#frmContacto").validate({
                 rules: {
                     email: {
@@ -128,16 +127,14 @@
                 }
             });
 
-            // Método de validación para solo letras
             $.validator.addMethod("lettersonly", function (value, element) {
                 return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
             }, "Por favor, introduce solo letras.");
 
-            // Configuración de Pusher
             Pusher.logToConsole = true;
             var pusher = new Pusher('753bfbd057a6da283a0f', {
-                cluster: 'us2'
-            });
+                  cluster: 'us2'
+                });
 
             var channel = pusher.subscribe("registrosTiempoReal");
             channel.bind("registroTiempoReal", function (mensaje) {
