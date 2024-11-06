@@ -4,7 +4,10 @@ import mysql.connector
 import datetime
 import pytz
 
+from flask_cors import CORS, cross_origin
+
 app = Flask(__name__)
+CORS(app)
 
 pusher_client = pusher.Pusher(
         app_id = "1766057",
