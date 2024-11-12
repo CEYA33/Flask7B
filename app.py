@@ -28,7 +28,7 @@ def get_db_connection():
 
 @app.route("/")
 def index():
-    return render_template("app.html")
+    return render_template("contacto.html")
 
 # Ruta para manejar la creación y edición de contactos
 @app.route("/contacto", methods=["GET", "POST"])
