@@ -31,7 +31,7 @@ def index():
     return render_template("contacto.html")
 
 # Ruta para manejar la creación y edición de contactos
-@app.route("/contacto", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def contacto():
     if request.method == "POST":
         id_contacto = request.form.get("id_contacto")
